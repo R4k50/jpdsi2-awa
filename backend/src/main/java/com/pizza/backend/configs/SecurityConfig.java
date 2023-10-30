@@ -31,8 +31,16 @@ public class SecurityConfig
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests((requests) -> requests
-                .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
-                .anyRequest().authenticated());
+                .requestMatchers(HttpMethod.POST, "/login", "/register").anonymous()
+
+                .requestMatchers(HttpMethod.GET, "/products").permitAll()
+                .requestMatchers(HttpMethod.POST, "/product").authenticated()
+                .requestMatchers(HttpMethod.GET, "/product/{id}").permitAll()
+                .requestMatchers(HttpMethod.PATCH, "/product/{id}").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/product/{id}").authenticated()
+
+                .anyRequest().denyAll()
+            );
 
         return http.build();
     }
