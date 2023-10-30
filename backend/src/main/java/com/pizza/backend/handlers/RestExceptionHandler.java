@@ -4,40 +4,46 @@ import com.pizza.backend.dtos.ErrorDto;
 import com.pizza.backend.exceptions.AppException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class RestExceptionHandler
 {
-    @ExceptionHandler(AppException.class)
-    @ResponseBody
-    public ResponseEntity<ErrorDto> handleException(AppException ex)
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<ErrorDto> handleGeneralExceptions(Exception ex)
     {
-        List<String> errors = new ArrayList<>();
-        errors.add(ex.getMessage());
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new ErrorDto(ex.getMessage()));
+    }
 
+    @ExceptionHandler(RuntimeException.class)
+    public final ResponseEntity<ErrorDto> handleRuntimeExceptions(RuntimeException ex)
+    {
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new ErrorDto(ex.getMessage()));
+    }
+
+    @ExceptionHandler(AppException.class)
+    public final ResponseEntity<ErrorDto> handleAppExceptions(AppException ex)
+    {
         return ResponseEntity
             .status(ex.getStatus())
-            .body(new ErrorDto(errors));
+            .body(new ErrorDto(ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
     public ResponseEntity<ErrorDto> handleInvalidArgument(MethodArgumentNotValidException ex)
     {
-        List<String> errors = new ArrayList<>();
-
-        ex.getBindingResult().getFieldErrors().forEach(
-            error -> {
-                errors.add(error.getDefaultMessage());
-            }
-        );
+        List<String> errors = ex.getBindingResult().getFieldErrors()
+            .stream().map(ObjectError::getDefaultMessage).collect(Collectors.toList());
 
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
