@@ -3,6 +3,7 @@ package com.pizza.backend.providers;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.pizza.backend.dtos.UserDto;
 import com.pizza.backend.services.UserService;
@@ -51,9 +52,28 @@ public class UserAuthenticationProvider
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         JWTVerifier verifier = JWT.require(algorithm).build();
 
-        DecodedJWT decoded = verifier.verify(token);
-        UserDto user = userService.findByEmail(decoded.getSubject());
+        UserDto user = null;
+
+        if (!isTokenExpired(verifier, token))
+        {
+            DecodedJWT decoded = verifier.verify(token);
+            user = userService.findByEmail(decoded.getSubject());
+        }
 
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+    }
+
+    public boolean isTokenExpired(JWTVerifier verifier, String token)
+    {
+        try
+        {
+            DecodedJWT decoded = verifier.verify(token);
+        }
+        catch (JWTVerificationException e)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
