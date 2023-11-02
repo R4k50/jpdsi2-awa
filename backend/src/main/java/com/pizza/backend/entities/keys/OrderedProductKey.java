@@ -1,4 +1,4 @@
-package com.pizza.backend.entites.keys;
+package com.pizza.backend.entities.keys;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

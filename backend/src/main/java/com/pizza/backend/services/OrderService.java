@@ -1,7 +1,7 @@
 package com.pizza.backend.services;
 
 import com.pizza.backend.dtos.*;
-import com.pizza.backend.entites.*;
+import com.pizza.backend.entities.*;
 import com.pizza.backend.exceptions.AppException;
 import com.pizza.backend.mappers.OrderMapper;
 import com.pizza.backend.mappers.OrderedProductMapper;

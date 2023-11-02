@@ -3,7 +3,7 @@ package com.pizza.backend.services;
 import com.pizza.backend.dtos.LoginDto;
 import com.pizza.backend.dtos.RegisterDto;
 import com.pizza.backend.dtos.UserDto;
-import com.pizza.backend.entites.User;
+import com.pizza.backend.entities.User;
 import com.pizza.backend.exceptions.AppException;
 import com.pizza.backend.mappers.UserMapper;
 import com.pizza.backend.repositories.UserRepository;

@@ -1,7 +1,7 @@
 package com.pizza.backend.mappers;
 
 import com.pizza.backend.dtos.*;
-import com.pizza.backend.entites.Order;
+import com.pizza.backend.entities.Order;
 import org.mapstruct.*;
 
 import java.util.List;

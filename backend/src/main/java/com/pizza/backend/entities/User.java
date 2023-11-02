@@ -1,4 +1,4 @@
-package com.pizza.backend.entites;
+package com.pizza.backend.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

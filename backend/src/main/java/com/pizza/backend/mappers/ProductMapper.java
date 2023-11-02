@@ -3,7 +3,7 @@ package com.pizza.backend.mappers;
 import com.pizza.backend.dtos.NewProductDto;
 import com.pizza.backend.dtos.PatchProductDto;
 import com.pizza.backend.dtos.ProductDto;
-import com.pizza.backend.entites.Product;
+import com.pizza.backend.entities.Product;
 import org.mapstruct.*;
 
 import java.util.List;

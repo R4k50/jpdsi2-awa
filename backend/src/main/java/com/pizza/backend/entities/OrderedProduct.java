@@ -1,6 +1,6 @@
-package com.pizza.backend.entites;
+package com.pizza.backend.entities;
 
-import com.pizza.backend.entites.keys.OrderedProductKey;
+import com.pizza.backend.entities.keys.OrderedProductKey;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
