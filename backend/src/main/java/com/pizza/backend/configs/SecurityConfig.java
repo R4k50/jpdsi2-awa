@@ -39,6 +39,12 @@ public class SecurityConfig
                 .requestMatchers(HttpMethod.PATCH, "/product/{id}").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/product/{id}").authenticated()
 
+                .requestMatchers(HttpMethod.GET, "/orders").authenticated()
+                .requestMatchers(HttpMethod.POST, "/order").authenticated()
+                .requestMatchers(HttpMethod.GET, "/order/{id}").authenticated()
+                .requestMatchers(HttpMethod.PATCH, "/order/{id}").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/order/{id}").authenticated()
+
                 .anyRequest().denyAll()
             );
 
