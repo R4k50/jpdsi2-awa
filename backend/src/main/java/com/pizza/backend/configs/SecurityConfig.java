@@ -7,9 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -17,6 +23,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig
 {
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
@@ -33,21 +40,48 @@ public class SecurityConfig
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers(HttpMethod.POST, "/login", "/register").anonymous()
 
-                .requestMatchers(HttpMethod.GET, "/products").permitAll()
-                .requestMatchers(HttpMethod.POST, "/product").authenticated()
-                .requestMatchers(HttpMethod.GET, "/product/{id}").permitAll()
-                .requestMatchers(HttpMethod.PATCH, "/product/{id}").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/product/{id}").authenticated()
+                .requestMatchers(HttpMethod.POST, "/addRole/{userId}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/removeRole/{userId}").hasRole("ADMIN")
 
-                .requestMatchers(HttpMethod.GET, "/orders").authenticated()
+                .requestMatchers(HttpMethod.GET, "/products").permitAll()
+                .requestMatchers(HttpMethod.POST, "/product").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/product/{id}").permitAll()
+                .requestMatchers(HttpMethod.PATCH, "/product/{id}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/product/{id}").hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/orders").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/order").authenticated()
-                .requestMatchers(HttpMethod.GET, "/order/{id}").authenticated()
-                .requestMatchers(HttpMethod.PATCH, "/order/{id}").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/order/{id}").authenticated()
+                .requestMatchers(HttpMethod.GET, "/order/{id}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/order/{id}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/order/{id}").hasRole("ADMIN")
 
                 .anyRequest().denyAll()
             );
 
         return http.build();
+    }
+
+    @Bean
+    static GrantedAuthorityDefaults grantedAuthorityDefaults()
+    {
+        return new GrantedAuthorityDefaults("ROLE_");
+    }
+
+    @Bean
+    static RoleHierarchy roleHierarchy()
+    {
+        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_DELIVERY");
+
+        return hierarchy;
+    }
+
+    @Bean
+    static MethodSecurityExpressionHandler methodSecurityExpressionHandler()
+    {
+        DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
+        expressionHandler.setRoleHierarchy(roleHierarchy());
+
+        return expressionHandler;
     }
 }

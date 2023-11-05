@@ -6,6 +6,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.pizza.backend.dtos.UserDto;
+import com.pizza.backend.entities.Role;
+import com.pizza.backend.entities.User;
+import com.pizza.backend.mappers.UserMapper;
 import com.pizza.backend.services.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Component
@@ -27,6 +28,7 @@ public class UserAuthenticationProvider
     private String secretKey;
 
     private final UserService userService;
+    private final UserMapper userMapper;
 
     @PostConstruct
     protected void init()
@@ -53,7 +55,8 @@ public class UserAuthenticationProvider
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         JWTVerifier verifier = JWT.require(algorithm).build();
 
-        UserDto user = null;
+        User user = null;
+        List<Role> roles = new ArrayList<>();
 
         if (!isTokenExpired(verifier, token))
         {
@@ -61,7 +64,12 @@ public class UserAuthenticationProvider
             user = userService.findByEmail(decoded.getSubject());
         }
 
-        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+        if (user != null)
+        {
+            roles.addAll(user.getRoles());
+        }
+
+        return new UsernamePasswordAuthenticationToken(user, null, roles);
     }
 
     public boolean isTokenExpired(JWTVerifier verifier, String token)
@@ -80,8 +88,8 @@ public class UserAuthenticationProvider
 
     public UserDto getAuthenticatedUserDto()
     {
-        UserDto userDto = (UserDto)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return userDto;
+        return userMapper.toUserDto(user);
     }
 }
