@@ -43,9 +43,50 @@ public class OrderService
     return orderMapper.toFullOrderDto(order, orderedProductDtos);
   }
 
+  public List<FullOrderDto> findAllByCurrentUser()
+  {
+    UserDto userDto = userAuthenticationProvider.getAuthenticatedUserDto();
+    User user = userRepository.getById(userDto.getId());
+
+    List<Order> orders = orderRepository.findAllByUser(user);
+    List<FullOrderDto> fullOrderDtos = new ArrayList<>();
+
+    for (Order order : orders)
+    {
+      List<OrderedProduct> orderedProducts = orderedProductRepository.findAllByOrderId(order.getId());
+      List<OrderedProductDto> orderedProductDtos = orderedProductMapper.toOrderedProductDtoList(orderedProducts);
+
+      FullOrderDto fullOrderDto = orderMapper.toFullOrderDto(order, orderedProductDtos);
+      fullOrderDtos.add(fullOrderDto);
+    }
+
+    return fullOrderDtos;
+  }
+
   public List<FullOrderDto> findAll()
   {
     List<Order> orders = orderRepository.findAll();
+
+    List<FullOrderDto> fullOrderDtos = new ArrayList<>();
+
+    for (Order order : orders)
+    {
+      List<OrderedProduct> orderedProducts = orderedProductRepository.findAllByOrderId(order.getId());
+      List<OrderedProductDto> orderedProductDtos = orderedProductMapper.toOrderedProductDtoList(orderedProducts);
+      FullOrderDto fullOrderDto = orderMapper.toFullOrderDto(order, orderedProductDtos);
+
+      fullOrderDtos.add(fullOrderDto);
+    }
+
+    return fullOrderDtos;
+  }
+
+  public List<FullOrderDto> findAllAssigned()
+  {
+    UserDto userDto = userAuthenticationProvider.getAuthenticatedUserDto();
+    User user = userRepository.getById(userDto.getId());
+
+    List<Order> orders = orderRepository.findAllByDeliveryMan(user);
 
     List<FullOrderDto> fullOrderDtos = new ArrayList<>();
 
@@ -132,6 +173,50 @@ public class OrderService
     List<OrderedProductDto> orderedProductDtos = orderedProductMapper.toOrderedProductDtoList(orderedProducts);
 
     return orderMapper.toFullOrderDto(updatedOrder, orderedProductDtos);
+  }
+
+  public FullOrderDto assignToMe(Long id)
+  {
+    UserDto userDto = userAuthenticationProvider.getAuthenticatedUserDto();
+    User user = userRepository.getById(userDto.getId());
+
+    Order order = orderRepository.findById(id)
+      .orElseThrow(() -> new AppException("Unknown order", HttpStatus.NOT_FOUND));
+
+    if (order.getDeliveryMan() != null)
+    {
+      throw new AppException("This order is assigned to someone else", HttpStatus.BAD_REQUEST);
+    }
+
+    order.setDeliveryMan(user);
+    Order assignedOrder = orderRepository.save(order);
+
+    List<OrderedProduct> orderedProducts = orderedProductRepository.findAllByOrderId(assignedOrder.getId());
+    List<OrderedProductDto> orderedProductDtos = orderedProductMapper.toOrderedProductDtoList(orderedProducts);
+
+    return orderMapper.toFullOrderDto(assignedOrder, orderedProductDtos);
+  }
+
+  public void deleteAssigned(Long id)
+  {
+    UserDto userDto = userAuthenticationProvider.getAuthenticatedUserDto();
+    User user = userRepository.getById(userDto.getId());
+
+    Order order = orderRepository.findById(id)
+        .orElseThrow(() -> new AppException("Unknown order", HttpStatus.NOT_FOUND));
+
+    if (!user.equals(order.getDeliveryMan()))
+    {
+      throw new AppException("This order is not assigned to you", HttpStatus.BAD_REQUEST);
+    }
+
+    List<OrderedProduct> orderedProducts = orderedProductRepository.findAllByOrderId(order.getId());
+
+    for (OrderedProduct orderedProduct : orderedProducts)
+      orderedProduct.setOrder(null);
+
+    orderedProductRepository.deleteAll(orderedProducts);
+    orderRepository.deleteById(order.getId());
   }
 
   public void delete(Long id)

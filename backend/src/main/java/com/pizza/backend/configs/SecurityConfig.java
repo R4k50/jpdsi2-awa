@@ -55,6 +55,11 @@ public class SecurityConfig
                 .requestMatchers(HttpMethod.PATCH, "/order/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/order/{id}").hasRole("ADMIN")
 
+                .requestMatchers(HttpMethod.GET, "/my-orders").authenticated()
+                .requestMatchers(HttpMethod.GET, "/assigned-orders").hasRole("DELIVERY")
+                .requestMatchers(HttpMethod.PATCH, "/order/{id}/assign").hasRole("DELIVERY")
+                .requestMatchers(HttpMethod.DELETE, "/assigned-order/{id}").hasRole("DELIVERY")
+
                 .anyRequest().denyAll()
             );
 
