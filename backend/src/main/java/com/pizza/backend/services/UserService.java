@@ -1,8 +1,6 @@
 package com.pizza.backend.services;
 
-import com.pizza.backend.dtos.LoginDto;
-import com.pizza.backend.dtos.RegisterDto;
-import com.pizza.backend.dtos.UserDto;
+import com.pizza.backend.dtos.*;
 import com.pizza.backend.entities.Role;
 import com.pizza.backend.entities.User;
 import com.pizza.backend.exceptions.AppException;
@@ -10,11 +8,15 @@ import com.pizza.backend.mappers.UserMapper;
 import com.pizza.backend.repositories.RoleRepository;
 import com.pizza.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,6 +28,71 @@ public class UserService
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+
+    public UserDto findById(Long id)
+    {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+
+        return userMapper.toUserDto(user);
+    }
+
+    public Page<UserDto> findAll(Pageable pageable)
+    {
+        List<User> users = userRepository.findAll();
+        List<UserDto> userDtos = userMapper.toUserDtoList(users);
+
+        return new PageImpl<>(userDtos, pageable, userDtos.size());
+    }
+
+    public UserDto save(NewUserDto newUserDto)
+    {
+        Optional<User> existingUser = userRepository.findByEmail(newUserDto.getEmail());
+
+        if (existingUser.isPresent())
+            throw new AppException("Email already taken", HttpStatus.BAD_REQUEST);
+
+        User user = userMapper.newUserDtoToUser(newUserDto);
+        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(newUserDto.getPassword())));
+        addRole(user.getId(), "ROLE_USER");
+
+        User savedUser = userRepository.save(user);
+
+        return userMapper.toUserDto(savedUser);
+    }
+
+    public UserDto update(PatchUserDto patchUserDto, Long id)
+    {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+
+        if (!patchUserDto.getEmail().isEmpty())
+        {
+            Optional<User> existingUser = userRepository.findByEmail(patchUserDto.getEmail());
+
+            if (existingUser.isPresent())
+                throw new AppException("Email already taken", HttpStatus.BAD_REQUEST);
+        }
+
+        if (!patchUserDto.getPassword().isEmpty())
+        {
+            user.setPassword(passwordEncoder.encode(CharBuffer.wrap(patchUserDto.getPassword())));
+        }
+
+        userMapper.update(user, patchUserDto);
+
+        User updatedUser = userRepository.save(user);
+
+        return userMapper.toUserDto(updatedUser);
+    }
+
+    public void delete(Long id)
+    {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+
+        userRepository.delete(user);
+    }
 
     public UserDto login(LoginDto loginDto)
     {
@@ -50,6 +117,7 @@ public class UserService
 
         User user = userMapper.registerToUser(registerDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(registerDto.getPassword())));
+        addRole(user.getId(), "ROLE_USER");
 
         User savedUser = userRepository.save(user);
 

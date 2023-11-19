@@ -36,6 +36,7 @@ public class PopulateDataLoader implements ApplicationRunner
   {
     createRole("ROLE_ADMIN");
     createRole("ROLE_DELIVERY");
+    createRole("ROLE_USER");
   }
 
   private void createRole(String name)
@@ -88,9 +89,11 @@ public class PopulateDataLoader implements ApplicationRunner
       User user = userMapper.registerToUser(registerDto);
       user.setPassword(passwordEncoder.encode(CharBuffer.wrap(registerDto.getPassword())));
 
+      Role defaultRole = roleRepository.getByName("ROLE_USER");
       Role admin = roleRepository.getByName(role);
 
       Set<Role> roles = new HashSet<>();
+      roles.add(defaultRole);
       roles.add(admin);
       user.setRoles(roles);
 
@@ -106,6 +109,12 @@ public class PopulateDataLoader implements ApplicationRunner
     {
       User user = userMapper.registerToUser(registerDto);
       user.setPassword(passwordEncoder.encode(CharBuffer.wrap(registerDto.getPassword())));
+
+      Role defaultRole = roleRepository.getByName("ROLE_USER");
+
+      Set<Role> roles = new HashSet<>();
+      roles.add(defaultRole);
+      user.setRoles(roles);
 
       userRepository.save(user);
     }

@@ -1,11 +1,9 @@
 package com.pizza.backend.mappers;
 
-import com.pizza.backend.dtos.RegisterDto;
-import com.pizza.backend.dtos.UserDto;
+import com.pizza.backend.dtos.*;
 import com.pizza.backend.entities.Role;
 import com.pizza.backend.entities.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +13,7 @@ import java.util.Set;
 public interface UserMapper
 {
     UserDto toUserDto(User user);
+    List<UserDto> toUserDtoList(List<User> users);
 
     @Mapping(target = "password", ignore = true)
     User registerToUser(RegisterDto registerDto);
@@ -27,7 +26,14 @@ public interface UserMapper
         {
             roleList.add(role.getName());
         }
-        
+
         return roleList;
     }
+
+    User newUserDtoToUser(NewUserDto newUserDto);
+
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "email", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void update(@MappingTarget User user, PatchUserDto patchUserDto);
 }

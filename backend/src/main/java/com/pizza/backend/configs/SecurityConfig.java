@@ -40,6 +40,12 @@ public class SecurityConfig
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers(HttpMethod.POST, "/login", "/register").anonymous()
 
+                .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/user").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/user/{id}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/user/{id}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/user/{id}").hasRole("ADMIN")
+
                 .requestMatchers(HttpMethod.POST, "/addRole/{userId}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/removeRole/{userId}").hasRole("ADMIN")
 
@@ -50,12 +56,12 @@ public class SecurityConfig
                 .requestMatchers(HttpMethod.DELETE, "/product/{id}").hasRole("ADMIN")
 
                 .requestMatchers(HttpMethod.GET, "/orders").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/order").authenticated()
+                .requestMatchers(HttpMethod.POST, "/order").hasRole("USER")
                 .requestMatchers(HttpMethod.GET, "/order/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/order/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/order/{id}").hasRole("ADMIN")
 
-                .requestMatchers(HttpMethod.GET, "/my-orders").authenticated()
+                .requestMatchers(HttpMethod.GET, "/my-orders").hasRole("USER")
                 .requestMatchers(HttpMethod.GET, "/assigned-orders").hasRole("DELIVERY")
                 .requestMatchers(HttpMethod.PATCH, "/order/{id}/assign").hasRole("DELIVERY")
                 .requestMatchers(HttpMethod.DELETE, "/assigned-order/{id}").hasRole("DELIVERY")
@@ -76,7 +82,10 @@ public class SecurityConfig
     static RoleHierarchy roleHierarchy()
     {
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
-        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_DELIVERY");
+        hierarchy.setHierarchy(
+            "ROLE_ADMIN > ROLE_DELIVERY\n" +
+            "ROLE_DELIVERY > ROLE_USER"
+        );
 
         return hierarchy;
     }
