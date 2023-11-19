@@ -1,6 +1,10 @@
 package com.pizza.backend.services;
 
-import com.pizza.backend.dtos.*;
+import com.pizza.backend.dtos.auth.LoginDto;
+import com.pizza.backend.dtos.auth.RegisterDto;
+import com.pizza.backend.dtos.users.NewUserDto;
+import com.pizza.backend.dtos.users.PatchUserDto;
+import com.pizza.backend.dtos.users.UserDto;
 import com.pizza.backend.entities.Role;
 import com.pizza.backend.entities.User;
 import com.pizza.backend.exceptions.AppException;

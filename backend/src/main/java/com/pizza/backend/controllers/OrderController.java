@@ -1,7 +1,9 @@
 package com.pizza.backend.controllers;
 
-import com.pizza.backend.dtos.*;
-import com.pizza.backend.entities.Order;
+import com.pizza.backend.dtos.orders.FullOrderDto;
+import com.pizza.backend.dtos.orders.NewOrderDto;
+import com.pizza.backend.dtos.orders.OrderDto;
+import com.pizza.backend.dtos.orders.PatchOrderDto;
 import com.pizza.backend.services.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController

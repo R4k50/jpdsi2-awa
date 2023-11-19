@@ -1,6 +1,6 @@
 package com.pizza.backend.loaders;
 
-import com.pizza.backend.dtos.RegisterDto;
+import com.pizza.backend.dtos.auth.RegisterDto;
 import com.pizza.backend.entities.Role;
 import com.pizza.backend.entities.User;
 import com.pizza.backend.mappers.UserMapper;

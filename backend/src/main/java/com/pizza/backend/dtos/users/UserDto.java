@@ -1,4 +1,4 @@
-package com.pizza.backend.dtos;
+package com.pizza.backend.dtos.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

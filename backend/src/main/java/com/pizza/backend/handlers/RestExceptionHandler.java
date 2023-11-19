@@ -1,6 +1,6 @@
 package com.pizza.backend.handlers;
 
-import com.pizza.backend.dtos.ErrorDto;
+import com.pizza.backend.dtos.errors.ErrorDto;
 import com.pizza.backend.exceptions.AppException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,8 @@
 package com.pizza.backend.controllers;
 
-import com.pizza.backend.dtos.*;
+import com.pizza.backend.dtos.users.NewUserDto;
+import com.pizza.backend.dtos.users.PatchUserDto;
+import com.pizza.backend.dtos.users.UserDto;
 import com.pizza.backend.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

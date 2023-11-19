@@ -1,6 +1,6 @@
 package com.pizza.backend.mappers;
 
-import com.pizza.backend.dtos.OrderedProductDto;
+import com.pizza.backend.dtos.orderedProducts.OrderedProductDto;
 import com.pizza.backend.entities.Order;
 import com.pizza.backend.entities.OrderedProduct;
 import com.pizza.backend.entities.keys.OrderedProductKey;

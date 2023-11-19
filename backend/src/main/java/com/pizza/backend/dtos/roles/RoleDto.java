@@ -1,4 +1,4 @@
-package com.pizza.backend.dtos;
+package com.pizza.backend.dtos.roles;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

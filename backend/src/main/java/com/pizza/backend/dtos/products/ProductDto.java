@@ -1,4 +1,4 @@
-package com.pizza.backend.dtos;
+package com.pizza.backend.dtos.products;
 
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;

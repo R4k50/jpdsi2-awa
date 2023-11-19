@@ -1,8 +1,8 @@
 package com.pizza.backend.mappers;
 
-import com.pizza.backend.dtos.NewProductDto;
-import com.pizza.backend.dtos.PatchProductDto;
-import com.pizza.backend.dtos.ProductDto;
+import com.pizza.backend.dtos.products.NewProductDto;
+import com.pizza.backend.dtos.products.PatchProductDto;
+import com.pizza.backend.dtos.products.ProductDto;
 import com.pizza.backend.entities.Product;
 import org.mapstruct.*;
 

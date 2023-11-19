@@ -1,4 +1,4 @@
-package com.pizza.backend.dtos;
+package com.pizza.backend.dtos.errors;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

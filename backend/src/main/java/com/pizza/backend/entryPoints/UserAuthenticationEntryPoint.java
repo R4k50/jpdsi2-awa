@@ -1,7 +1,7 @@
 package com.pizza.backend.entryPoints;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pizza.backend.dtos.ErrorDto;
+import com.pizza.backend.dtos.errors.ErrorDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

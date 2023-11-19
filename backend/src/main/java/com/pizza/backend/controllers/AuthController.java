@@ -1,9 +1,9 @@
 package com.pizza.backend.controllers;
 
 import com.pizza.backend.providers.UserAuthenticationProvider;
-import com.pizza.backend.dtos.LoginDto;
-import com.pizza.backend.dtos.RegisterDto;
-import com.pizza.backend.dtos.UserDto;
+import com.pizza.backend.dtos.auth.LoginDto;
+import com.pizza.backend.dtos.auth.RegisterDto;
+import com.pizza.backend.dtos.users.UserDto;
 import com.pizza.backend.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

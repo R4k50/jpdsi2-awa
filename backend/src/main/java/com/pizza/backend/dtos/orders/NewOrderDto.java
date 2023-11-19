@@ -1,14 +1,9 @@
-package com.pizza.backend.dtos;
+package com.pizza.backend.dtos.orders;
 
-import jakarta.persistence.Id;
+import com.pizza.backend.dtos.orderedProducts.OrderedProductDto;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 import java.util.List;
 
@@ -16,17 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FullOrderDto
+public class NewOrderDto
 {
-  @NotEmpty(message = "Id must not be empty")
-  @Id
-  private Long id;
-
-  @NotNull(message = "Products must not be null")
+  @NotNull(message = "Products must not be empty")
   private List<@Valid OrderedProductDto> products;
-
-  @NotEmpty(message = "userId must not be empty")
-  private Long userId;
 
   @NotEmpty(message = "Address must not be empty")
   @Size(min = 2, max = 200, message = "Address must be between 2 and 200 characters")
@@ -42,7 +30,4 @@ public class FullOrderDto
 
   @Size(min = 2, max = 200, message = "Notes field must be between 2 and 200 characters")
   private String notes;
-
-  @NotEmpty(message = "deliveryManId must not be empty")
-  private Long deliveryManId;
 }

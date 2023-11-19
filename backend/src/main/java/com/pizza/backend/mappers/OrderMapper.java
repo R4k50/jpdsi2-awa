@@ -1,6 +1,10 @@
 package com.pizza.backend.mappers;
 
-import com.pizza.backend.dtos.*;
+import com.pizza.backend.dtos.orderedProducts.OrderedProductDto;
+import com.pizza.backend.dtos.orders.FullOrderDto;
+import com.pizza.backend.dtos.orders.NewOrderDto;
+import com.pizza.backend.dtos.orders.OrderDto;
+import com.pizza.backend.dtos.orders.PatchOrderDto;
 import com.pizza.backend.entities.Order;
 import org.mapstruct.*;
 

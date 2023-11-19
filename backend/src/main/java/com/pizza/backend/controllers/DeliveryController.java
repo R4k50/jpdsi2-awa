@@ -1,6 +1,6 @@
 package com.pizza.backend.controllers;
 
-import com.pizza.backend.dtos.FullOrderDto;
+import com.pizza.backend.dtos.orders.FullOrderDto;
 import com.pizza.backend.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

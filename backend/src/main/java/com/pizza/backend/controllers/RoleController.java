@@ -1,6 +1,6 @@
 package com.pizza.backend.controllers;
 
-import com.pizza.backend.dtos.RoleDto;
+import com.pizza.backend.dtos.roles.RoleDto;
 import com.pizza.backend.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

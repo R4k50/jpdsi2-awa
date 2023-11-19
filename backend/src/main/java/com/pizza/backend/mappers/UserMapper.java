@@ -1,6 +1,9 @@
 package com.pizza.backend.mappers;
 
-import com.pizza.backend.dtos.*;
+import com.pizza.backend.dtos.auth.RegisterDto;
+import com.pizza.backend.dtos.users.NewUserDto;
+import com.pizza.backend.dtos.users.PatchUserDto;
+import com.pizza.backend.dtos.users.UserDto;
 import com.pizza.backend.entities.Role;
 import com.pizza.backend.entities.User;
 import org.mapstruct.*;

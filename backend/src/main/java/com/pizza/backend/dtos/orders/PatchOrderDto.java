@@ -1,4 +1,4 @@
-package com.pizza.backend.dtos;
+package com.pizza.backend.dtos.orders;
 
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

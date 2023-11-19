@@ -1,6 +1,8 @@
 package com.pizza.backend.controllers;
 
-import com.pizza.backend.dtos.*;
+import com.pizza.backend.dtos.products.NewProductDto;
+import com.pizza.backend.dtos.products.PatchProductDto;
+import com.pizza.backend.dtos.products.ProductDto;
 import com.pizza.backend.entities.Product;
 import com.pizza.backend.services.ProductService;
 import jakarta.validation.Valid;
@@ -43,7 +45,7 @@ public class ProductController
     }
 
     @PatchMapping("/product/{id}")
-    public ResponseEntity<ProductDto> update(@RequestBody @Valid PatchProductDto patchProductDto,@PathVariable Long id)
+    public ResponseEntity<ProductDto> update(@RequestBody @Valid PatchProductDto patchProductDto, @PathVariable Long id)
     {
         ProductDto productDto = productService.update(patchProductDto, id);
 

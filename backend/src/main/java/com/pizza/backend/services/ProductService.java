@@ -1,8 +1,8 @@
 package com.pizza.backend.services;
 
-import com.pizza.backend.dtos.NewProductDto;
-import com.pizza.backend.dtos.PatchProductDto;
-import com.pizza.backend.dtos.ProductDto;
+import com.pizza.backend.dtos.products.NewProductDto;
+import com.pizza.backend.dtos.products.PatchProductDto;
+import com.pizza.backend.dtos.products.ProductDto;
 import com.pizza.backend.entities.Product;
 import com.pizza.backend.exceptions.AppException;
 import com.pizza.backend.mappers.ProductMapper;

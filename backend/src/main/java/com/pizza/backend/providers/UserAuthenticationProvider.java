@@ -5,7 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.pizza.backend.dtos.UserDto;
+import com.pizza.backend.dtos.users.UserDto;
 import com.pizza.backend.entities.Role;
 import com.pizza.backend.entities.User;
 import com.pizza.backend.mappers.UserMapper;

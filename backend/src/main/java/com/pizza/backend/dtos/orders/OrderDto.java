@@ -1,5 +1,6 @@
-package com.pizza.backend.dtos;
+package com.pizza.backend.dtos.orders;
 
+import com.pizza.backend.dtos.orderedProducts.OrderedProductDto;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
