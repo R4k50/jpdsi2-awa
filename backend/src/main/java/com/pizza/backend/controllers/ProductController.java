@@ -1,14 +1,15 @@
 package com.pizza.backend.controllers;
 
 import com.pizza.backend.dtos.*;
+import com.pizza.backend.entities.Product;
 import com.pizza.backend.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,11 +27,11 @@ public class ProductController
     }
 
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDto>> getAll()
+    public ResponseEntity<Page<Product>> getAll(Pageable pageable)
     {
-        List<ProductDto> productDtos = productService.findAll();
+        Page<Product> products = productService.findAll(pageable);
 
-        return ResponseEntity.ok(productDtos);
+        return ResponseEntity.ok(products);
     }
 
     @PostMapping("/product")
