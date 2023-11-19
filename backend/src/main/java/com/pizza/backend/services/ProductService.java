@@ -8,10 +8,10 @@ import com.pizza.backend.exceptions.AppException;
 import com.pizza.backend.mappers.ProductMapper;
 import com.pizza.backend.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -28,11 +28,11 @@ public class ProductService
     return productMapper.toProductDto(product);
   }
 
-  public List<ProductDto> findAll()
+  public Page<Product> findAll(Pageable pageable)
   {
-    List<Product> products = productRepository.findAll();
+    Page<Product> products = productRepository.findAll(pageable);
 
-    return productMapper.toProductDtoList(products);
+    return products;
   }
 
   public ProductDto save(NewProductDto newProductDto)

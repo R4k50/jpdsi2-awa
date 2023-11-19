@@ -3,6 +3,8 @@ package com.pizza.backend.controllers;
 import com.pizza.backend.dtos.FullOrderDto;
 import com.pizza.backend.services.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +27,9 @@ public class DeliveryController
   }
 
   @GetMapping("/assigned-orders")
-  public ResponseEntity<List<FullOrderDto>> getAllAssigned()
+  public ResponseEntity<Page<FullOrderDto>> getAllAssigned(Pageable pageable)
   {
-    List<FullOrderDto> fullOrderDtos = orderService.findAllAssigned();
+    Page<FullOrderDto> fullOrderDtos = orderService.findAllAssigned(pageable);
 
     return ResponseEntity.ok(fullOrderDtos);
   }

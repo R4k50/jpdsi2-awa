@@ -11,6 +11,9 @@ import com.pizza.backend.repositories.OrderedProductRepository;
 import com.pizza.backend.repositories.ProductRepository;
 import com.pizza.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +66,7 @@ public class OrderService
     return fullOrderDtos;
   }
 
-  public List<FullOrderDto> findAll()
+  public Page<FullOrderDto> findAll(Pageable pageable)
   {
     List<Order> orders = orderRepository.findAll();
 
@@ -78,10 +81,10 @@ public class OrderService
       fullOrderDtos.add(fullOrderDto);
     }
 
-    return fullOrderDtos;
+    return new PageImpl<>(fullOrderDtos, pageable, fullOrderDtos.size());
   }
 
-  public List<FullOrderDto> findAllAssigned()
+  public Page<FullOrderDto> findAllAssigned(Pageable pageable)
   {
     UserDto userDto = userAuthenticationProvider.getAuthenticatedUserDto();
     User user = userRepository.getById(userDto.getId());
@@ -99,7 +102,7 @@ public class OrderService
       fullOrderDtos.add(fullOrderDto);
     }
 
-    return fullOrderDtos;
+    return new PageImpl<>(fullOrderDtos, pageable, fullOrderDtos.size());
   }
 
   public OrderDto save(NewOrderDto newOrderDto)

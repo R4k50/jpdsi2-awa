@@ -1,9 +1,12 @@
 package com.pizza.backend.controllers;
 
 import com.pizza.backend.dtos.*;
+import com.pizza.backend.entities.Order;
 import com.pizza.backend.services.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +29,11 @@ public class OrderController
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<List<FullOrderDto>> getAll()
+    public ResponseEntity<Page<FullOrderDto>> getAll(Pageable pageable)
     {
-        List<FullOrderDto> fullOrderDtos = orderService.findAll();
+        Page<FullOrderDto> orders = orderService.findAll(pageable);
 
-        return ResponseEntity.ok(fullOrderDtos);
+        return ResponseEntity.ok(orders);
     }
 
     @PostMapping("/order")
