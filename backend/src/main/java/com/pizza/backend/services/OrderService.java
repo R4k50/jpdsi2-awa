@@ -110,6 +110,24 @@ public class OrderService
     return new PageImpl<>(fullOrderDtos, pageable, fullOrderDtos.size());
   }
 
+  public Page<FullOrderDto> findAllUnassigned(Pageable pageable)
+  {
+    List<Order> orders = orderRepository.findAllByDeliveryMan(null);
+
+    List<FullOrderDto> fullOrderDtos = new ArrayList<>();
+
+    for (Order order : orders)
+    {
+      List<OrderedProduct> orderedProducts = orderedProductRepository.findAllByOrderId(order.getId());
+      List<OrderedProductDto> orderedProductDtos = orderedProductMapper.toOrderedProductDtoList(orderedProducts);
+      FullOrderDto fullOrderDto = orderMapper.toFullOrderDto(order, orderedProductDtos);
+
+      fullOrderDtos.add(fullOrderDto);
+    }
+
+    return new PageImpl<>(fullOrderDtos, pageable, fullOrderDtos.size());
+  }
+
   public OrderDto save(NewOrderDto newOrderDto)
   {
     Order order = orderMapper.newOrderDtoToOrder(newOrderDto);

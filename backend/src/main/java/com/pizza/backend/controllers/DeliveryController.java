@@ -34,6 +34,14 @@ public class DeliveryController
     return ResponseEntity.ok(fullOrderDtos);
   }
 
+  @GetMapping("/unassigned-orders")
+  public ResponseEntity<Page<FullOrderDto>> getAllUnassigned(Pageable pageable)
+  {
+    Page<FullOrderDto> fullOrderDtos = orderService.findAllUnassigned(pageable);
+
+    return ResponseEntity.ok(fullOrderDtos);
+  }
+
   @PatchMapping("/order/{id}/assign")
   public ResponseEntity<FullOrderDto> update(@PathVariable Long id)
   {

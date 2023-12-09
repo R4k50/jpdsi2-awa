@@ -63,6 +63,7 @@ public class SecurityConfig
 
                 .requestMatchers(HttpMethod.GET, "/my-orders").hasRole("USER")
                 .requestMatchers(HttpMethod.GET, "/assigned-orders").hasRole("DELIVERY")
+                .requestMatchers(HttpMethod.GET, "/unassigned-orders").hasRole("DELIVERY")
                 .requestMatchers(HttpMethod.PATCH, "/order/{id}/assign").hasRole("DELIVERY")
                 .requestMatchers(HttpMethod.DELETE, "/assigned-order/{id}").hasRole("DELIVERY")
 
