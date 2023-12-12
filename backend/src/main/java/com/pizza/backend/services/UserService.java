@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -43,10 +44,22 @@ public class UserService
 
     public Page<UserDto> findAll(Pageable pageable)
     {
-        List<User> users = userRepository.findAll();
-        List<UserDto> userDtos = userMapper.toUserDtoList(users);
+        Page<User> users = userRepository.findAll(pageable);
+        List<UserDto> userDtos = userMapper.toUserDtoList(users.getContent());
 
-        return new PageImpl<>(userDtos, pageable, userDtos.size());
+        return new PageImpl<>(userDtos, users.getPageable(), users.getTotalElements());
+    }
+
+    public Page<UserDto> findAll(Pageable pageable, String search)
+    {
+        String[] searchArray = search.split(",");
+
+        String searchParam = searchArray[0];
+        String searchValue = searchArray[1];
+
+        Page<UserDto> users = userRepository.findAll(searchParam, searchValue, pageable);
+
+        return users;
     }
 
     public UserDto save(NewUserDto newUserDto)
@@ -58,9 +71,9 @@ public class UserService
 
         User user = userMapper.newUserDtoToUser(newUserDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(newUserDto.getPassword())));
-        addRole(user.getId(), "ROLE_USER");
 
         User savedUser = userRepository.save(user);
+        addRole(user.getId(), "ROLE_USER");
 
         return userMapper.toUserDto(savedUser);
     }
@@ -121,9 +134,9 @@ public class UserService
 
         User user = userMapper.registerToUser(registerDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(registerDto.getPassword())));
-        addRole(user.getId(), "ROLE_USER");
 
         User savedUser = userRepository.save(user);
+        addRole(user.getId(), "ROLE_USER");
 
         return userMapper.toUserDto(savedUser);
     }
@@ -144,15 +157,14 @@ public class UserService
         Role role = roleRepository.findByName(roleName)
             .orElseThrow(() -> new AppException("Unknown role", HttpStatus.NOT_FOUND));
 
-        Set<Role> roles = user.getRoles();
-
-        if (roles.contains(role))
+        if (user.getRoles() != null && user.getRoles().contains(role))
         {
             throw new AppException("This user already have the given role", HttpStatus.BAD_REQUEST);
         }
 
-        roles.add(role);
+        Set<Role> roles = new HashSet<Role>() {{ add(role); }};
         user.setRoles(roles);
+
         userRepository.save(user);
     }
 

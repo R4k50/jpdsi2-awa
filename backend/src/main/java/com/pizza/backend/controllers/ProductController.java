@@ -29,10 +29,15 @@ public class ProductController
     }
 
     @GetMapping("/products")
-    public ResponseEntity<Page<Product>> getAll(Pageable pageable)
+    public ResponseEntity<Page<Product>> getAll(Pageable pageable, @RequestParam(required = false) String search)
     {
-        Page<Product> products = productService.findAll(pageable);
+        if (search == null || search.split(",").length != 2)
+        {
+            Page<Product> products = productService.findAll(pageable);
+            return ResponseEntity.ok(products);
+        }
 
+        Page<Product> products = productService.findAll(pageable, search);
         return ResponseEntity.ok(products);
     }
 

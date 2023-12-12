@@ -35,6 +35,18 @@ public class ProductService
     return products;
   }
 
+  public Page<Product> findAll(Pageable pageable, String search)
+  {
+    String[] searchArray = search.split(",");
+
+    String searchParam = searchArray[0];
+    String searchValue = searchArray[1];
+
+    Page<Product> products = productRepository.findAll(searchParam, searchValue, pageable);
+
+    return products;
+  }
+
   public ProductDto save(NewProductDto newProductDto)
   {
     Product product = productMapper.newProductDtoToProduct(newProductDto);

@@ -28,11 +28,16 @@ public class UserController
     }
 
     @GetMapping("/users")
-    public ResponseEntity<Page<UserDto>> getAll(Pageable pageable)
+    public ResponseEntity<Page<UserDto>> getAll(Pageable pageable, @RequestParam(required = false) String search)
     {
-        Page<UserDto> userDtos = userService.findAll(pageable);
+        if (search == null || search.split(",").length != 2)
+        {
+            Page<UserDto> users = userService.findAll(pageable);
+            return ResponseEntity.ok(users);
+        }
 
-        return ResponseEntity.ok(userDtos);
+        Page<UserDto> users = userService.findAll(pageable, search);
+        return ResponseEntity.ok(users);
     }
 
     @PostMapping("/user")

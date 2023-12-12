@@ -89,6 +89,18 @@ public class OrderService
     return new PageImpl<>(fullOrderDtos, pageable, fullOrderDtos.size());
   }
 
+  public Page<FullOrderDto> findAll(Pageable pageable, String search)
+  {
+    String[] searchArray = search.split(",");
+
+    String searchParam = searchArray[0];
+    String searchValue = searchArray[1];
+
+    Page<FullOrderDto> fullOrderDtos = orderRepository.findAll(searchParam, searchValue, pageable);
+
+    return fullOrderDtos;
+  }
+
   public Page<FullOrderDto> findAllAssigned(Pageable pageable)
   {
     UserDto userDto = userAuthenticationProvider.getAuthenticatedUserDto();

@@ -29,10 +29,15 @@ public class OrderController
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<Page<FullOrderDto>> getAll(Pageable pageable)
+    public ResponseEntity<Page<FullOrderDto>> getAll(Pageable pageable, @RequestParam(required = false) String search)
     {
-        Page<FullOrderDto> orders = orderService.findAll(pageable);
+        if (search == null || search.split(",").length != 2)
+        {
+            Page<FullOrderDto> orders = orderService.findAll(pageable);
+            return ResponseEntity.ok(orders);
+        }
 
+        Page<FullOrderDto> orders = orderService.findAll(pageable, search);
         return ResponseEntity.ok(orders);
     }
 
