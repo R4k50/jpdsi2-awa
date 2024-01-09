@@ -3,7 +3,9 @@ package com.pizza.backend.controllers;
 import com.pizza.backend.dtos.products.NewProductDto;
 import com.pizza.backend.dtos.products.PatchProductDto;
 import com.pizza.backend.dtos.products.ProductDto;
+import com.pizza.backend.entities.Image;
 import com.pizza.backend.entities.Product;
+import com.pizza.backend.services.ImageService;
 import com.pizza.backend.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController
 {
     private final ProductService productService;
+    private final ImageService imageService;
 
     @GetMapping("/product/{id}")
     public ResponseEntity<ProductDto> getOne(@PathVariable Long id)
@@ -42,24 +48,44 @@ public class ProductController
     }
 
     @PostMapping("/product")
-    public ResponseEntity<ProductDto> add(@RequestBody @Valid NewProductDto newProductDto)
+    public ResponseEntity<ProductDto> add(
+        @RequestPart("product") @Valid NewProductDto newProductDto,
+        @RequestPart("image") MultipartFile image
+    ) throws IOException
     {
+        Image savedImage = imageService.upload(image);
+
+        newProductDto.setImg(savedImage.getName());
         ProductDto productDto = productService.save(newProductDto);
 
         return ResponseEntity.ok(productDto);
     }
 
     @PatchMapping("/product/{id}")
-    public ResponseEntity<ProductDto> update(@RequestBody @Valid PatchProductDto patchProductDto, @PathVariable Long id)
+    public ResponseEntity<ProductDto> update(
+        @RequestPart(value="product", required=false) @Valid PatchProductDto patchProductDto,
+        @RequestPart(value="image", required=false) MultipartFile patchImage,
+        @PathVariable Long id
+    ) throws IOException
     {
-        ProductDto productDto = productService.update(patchProductDto, id);
+        if (patchImage == null)
+        {
+            ProductDto productDto = productService.update(patchProductDto, id);
+            return ResponseEntity.ok(productDto);
+        }
 
-        return ResponseEntity.ok(productDto);
+        ProductDto productDto = productService.findById(id);
+        Image updatedImage = imageService.update(productDto.getImg(), patchImage);
+
+        ProductDto patchedProductDto = productService.update(patchProductDto, updatedImage.getName(), id);
+
+        return ResponseEntity.ok(patchedProductDto);
     }
 
     @DeleteMapping("/product/{id}")
     public void delete(@PathVariable Long id)
     {
-        productService.delete(id);
+        Product product = productService.delete(id);
+        imageService.delete(product.getImg());
     }
 }

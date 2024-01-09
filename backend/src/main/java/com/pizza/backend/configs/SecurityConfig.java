@@ -67,6 +67,11 @@ public class SecurityConfig
                 .requestMatchers(HttpMethod.PATCH, "/order/{id}/assign").hasRole("DELIVERY")
                 .requestMatchers(HttpMethod.DELETE, "/assigned-order/{id}").hasRole("DELIVERY")
 
+                .requestMatchers(HttpMethod.GET, "/image/{name}").permitAll()
+                .requestMatchers(HttpMethod.POST, "/image").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/image/{name}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/image/{name}").hasRole("ADMIN")
+
                 .anyRequest().denyAll()
             );
 

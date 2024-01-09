@@ -1,5 +1,6 @@
 package com.pizza.backend.dtos.products;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +29,7 @@ public class NewProductDto
   @Digits(integer = 3, fraction = 2, message = "Price must have exactly two decimal places")
   private BigDecimal price;
 
-  @NotEmpty(message = "Image path must not be empty")
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @Size(min = 5, max = 100)
   private String img;
 }
