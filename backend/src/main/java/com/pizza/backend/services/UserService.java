@@ -72,8 +72,14 @@ public class UserService
         User user = userMapper.newUserDtoToUser(newUserDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(newUserDto.getPassword())));
 
+        Role role = roleRepository.findByName("ROLE_USER")
+            .orElseThrow(() -> new AppException("Unknown role", HttpStatus.NOT_FOUND));
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        user.setRoles(roles);
+
         User savedUser = userRepository.save(user);
-        addRole(user.getId(), "ROLE_USER");
 
         return userMapper.toUserDto(savedUser);
     }
@@ -83,7 +89,7 @@ public class UserService
         User user = userRepository.findById(id)
             .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
-        if (!patchUserDto.getEmail().isEmpty())
+        if (patchUserDto.getEmail() != null && !patchUserDto.getEmail().isEmpty())
         {
             Optional<User> existingUser = userRepository.findByEmail(patchUserDto.getEmail());
 
@@ -91,7 +97,7 @@ public class UserService
                 throw new AppException("Email already taken", HttpStatus.BAD_REQUEST);
         }
 
-        if (!patchUserDto.getPassword().isEmpty())
+        if (patchUserDto.getPassword() != null && !patchUserDto.getPassword().isEmpty())
         {
             user.setPassword(passwordEncoder.encode(CharBuffer.wrap(patchUserDto.getPassword())));
         }
@@ -162,7 +168,8 @@ public class UserService
             throw new AppException("This user already have the given role", HttpStatus.BAD_REQUEST);
         }
 
-        Set<Role> roles = new HashSet<Role>() {{ add(role); }};
+        Set<Role> roles = user.getRoles();
+        roles.add(role);
         user.setRoles(roles);
 
         userRepository.save(user);
