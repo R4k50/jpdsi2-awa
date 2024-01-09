@@ -4,10 +4,12 @@ import com.pizza.backend.dtos.errors.ErrorDto;
 import com.pizza.backend.exceptions.AppException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,9 +28,11 @@ public class RestExceptionHandler
     @ExceptionHandler(RuntimeException.class)
     public final ResponseEntity<ErrorDto> handleRuntimeExceptions(RuntimeException ex)
     {
+        System.out.println(ex);
+
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(new ErrorDto(ex.getMessage()));
+            .body(new ErrorDto("Internal server error"));
     }
 
     @ExceptionHandler(AppException.class)
@@ -48,5 +52,21 @@ public class RestExceptionHandler
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(new ErrorDto(errors));
+    }
+
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public final ResponseEntity<ErrorDto> handleMissingServletRequestPartExceptions(MissingServletRequestPartException ex)
+    {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(new ErrorDto(ex.getRequestPartName() + " is required"));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public final ResponseEntity<ErrorDto> handleHttpMessageNotReadableExceptions(HttpMessageNotReadableException ex)
+    {
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new ErrorDto("Provided value is not a number"));
     }
 }
