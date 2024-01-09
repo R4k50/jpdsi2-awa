@@ -1,0 +1,16 @@
+@use '../../../reusable' as *;
+
+.EditUser {
+  padding: 5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .Form {
+    .checkbox {
+      label {
+        margin-right: .25rem;
+      }
+    }
+  }
+}

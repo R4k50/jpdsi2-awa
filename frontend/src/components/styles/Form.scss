@@ -1,0 +1,121 @@
+@use '../../reusable' as *;
+
+.Form {
+  position: relative;
+
+  .container {
+    background: $bg-secondary;
+    padding: 2rem 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include desktop {
+      padding: 2rem 4rem;
+      border-radius: 2rem;
+      position: relative;
+      box-shadow: 0px 5px 7px rgba(196, 196, 196, 0.25);
+    }
+
+    h2 {
+      position: relative;
+      z-index: 200;
+    }
+
+    form {
+      width: 100%;
+      margin-top: 2rem;
+
+      .inputs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .5rem;
+      }
+
+      .actions {
+        margin: 2rem 0;
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        gap: 1rem;
+
+        @include desktop {
+          justify-content: center;
+          gap: 2rem;
+        }
+
+        .ButtonAction:disabled {
+          background: lighten($text-secondary, 50);
+          outline-color: lighten($text-secondary, 50);
+        }
+      }
+
+      .errors {
+        border: 5px solid #FF7171;
+        color: #FF7171;
+        font-weight: 600;
+        font-size: .8rem;
+        text-align: left;
+        padding: .5rem;
+        border-radius: .5rem;
+
+        @include desktop {
+          list-style-type: none;
+          background: none;
+          border: none;
+          padding: 0;
+          color: $bg-secondary;
+          position: fixed;
+          bottom: 0;
+          right: 0;
+          margin: 2rem;
+          z-index: 10000;
+        }
+
+        .error {
+          margin-left: 1rem;
+          padding: .2rem 0;
+
+          @include desktop {
+            background: #FF7171;
+            padding: .5rem;
+            border-radius: .5rem;
+            margin-top: .25rem;
+          }
+        }
+      }
+    }
+  }
+
+  .pizza {
+    display: none;
+
+    @include desktop {
+      display: block;
+      filter: drop-shadow(-2px 5px 5px rgba(92, 92, 92, 0.25));
+      position: absolute;
+
+      &:nth-of-type(1) {
+        width: 6rem;
+        top: -3rem;
+        right: -2rem;
+      }
+
+      &:nth-of-type(2) {
+        width: 8rem;
+        bottom: -3rem;
+        right: -3.5rem;
+        z-index: -1;
+      }
+
+      &:nth-of-type(3) {
+        width: 11rem;
+        top: -3rem;
+        left: -5rem;
+        z-index: -1;
+      }
+    }
+  }
+}

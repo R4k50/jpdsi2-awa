@@ -1,0 +1,22 @@
+@use '../../reusable' as *;
+
+.Socials {
+  display: flex;
+  gap: 1em;
+
+  .facebook {
+    color: #699BF7;
+  }
+
+  .twitter {
+    color: #6BB5DF;
+  }
+
+  .instagram {
+    color: #F25DAE;
+  }
+
+  .tiktok {
+    color: #000;
+  }
+}

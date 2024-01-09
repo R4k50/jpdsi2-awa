@@ -1,0 +1,93 @@
+@use '../../reusable' as *;
+
+.Product {
+  min-height: 5.5rem;
+  width: 100%;
+  display: flex;
+  background: $bg-secondary;
+  margin: 1rem 0;
+  padding: 1rem;
+  padding-left: 3.25rem;
+  box-shadow: $shadow-main;
+  border-radius: 1rem;
+  position: relative;
+  z-index: 100;
+
+  @include desktop {
+    width: auto;
+    min-width: 15rem;
+    margin-left: 2.5rem;
+  }
+
+  img {
+    width: 5rem;
+    filter: drop-shadow(0px 3px 2px rgba(104, 104, 104, 0.25));
+    position: absolute;
+    left: -2.5rem;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+  }
+
+  .content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    .main {
+      color: $accent;
+      display: flex;
+      justify-content: space-between;
+      font-size: 1rem;
+
+      h3 {
+        font-size: .75rem;
+      }
+
+      span {
+        color: $accent;
+        font-size: .75rem;
+        margin-left: 1rem;
+      }
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+
+      p {
+        width: 70%;
+        font-size: .55rem;
+      }
+
+      span {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        .iconify {
+          position: static;
+          font-size: 1rem;
+          transform: none;
+          margin-right: .25rem;
+        }
+      }
+
+    }
+  }
+
+  .ButtonAction {
+    position: absolute;
+    bottom: -.75rem;
+
+    &.Alt {
+      min-width: 2rem;
+      margin-left: 6.6rem;
+
+      @include desktop {
+        margin-left: 5.5rem;
+      }
+    }
+  }
+}

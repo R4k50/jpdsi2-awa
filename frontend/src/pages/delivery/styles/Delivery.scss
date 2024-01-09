@@ -1,0 +1,100 @@
+@use '../../../reusable' as *;
+
+.Delivery {
+  padding: 0 3rem;
+  text-align: center;
+
+  @include desktop {
+    min-height: 70vh;
+    padding: .5rem 6rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    padding: 1rem 0;
+
+    @include desktop {
+      text-align: left;
+    }
+  }
+
+  .container {
+    @include desktop {
+      display: flex;
+      justify-content: center;
+      gap: 5rem;
+    }
+
+    section {
+      @include desktop {
+        min-width: 40%;
+        text-align: center;
+      }
+
+      h3 {
+        margin-bottom: 1rem;
+        color: $text-alt-secondary;
+        font-weight: 500;
+        text-align: center;
+      }
+
+      .iconify {
+        color: mix($text-alt-secondary, $bg-main, 60%);
+        font-size: 5rem;
+        position: static;
+        transform: none;
+        text-align: center;
+      }
+    }
+
+    .order {
+      width: 100%;
+      background: $bg-secondary;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      border-radius: 1.5rem;
+      box-shadow: $shadow-main;
+      z-index: 100;
+
+      @include desktop {
+        text-align: left;
+        width: 25rem;
+        padding: 2rem;
+      }
+
+      .header {
+        margin-bottom: .2rem;
+
+        @include desktop {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .address {
+          font-weight: 600;
+          letter-spacing: 0;
+        }
+
+        .time {
+          letter-spacing: 0;
+          color: $text-alt-secondary;
+        }
+      }
+
+      .city {
+        font-weight: 200;
+        margin-bottom: 1rem;
+
+        span {
+          font-weight: 300;
+        }
+      }
+
+      .id {
+        font-size: .75rem;
+        margin-top: .25rem;
+        color: rgb(201, 201, 201);
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+@use '../../reusable' as *;
+
+.Input {
+  position: relative;
+  margin: 3px;
+
+  label {
+    position: absolute;
+    padding-left: 1rem;
+    color: lighten($text-main, 70);
+    z-index: 10;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: text;
+  }
+
+  .label-bg {
+    height: 3px;
+    position: absolute;
+    margin-left: .85rem;
+    padding: 0 .20rem;
+    background: $bg-secondary;
+    color: transparent;
+
+    span {
+      visibility: hidden;
+    }
+  }
+
+  input {
+    min-width: 10rem;
+    background: transparent;
+    padding: 0 1rem;
+    padding-bottom: .2rem;
+    border-radius: 1000px;
+    border: none;
+    outline: 3px solid;
+    font-size: 1rem;
+
+    &::placeholder {
+      font-size: 1rem;
+      color: transparent;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  }
+}

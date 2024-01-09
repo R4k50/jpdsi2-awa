@@ -1,0 +1,15 @@
+@use '../../reusable' as *;
+
+.FloatingNavbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 1000;
+
+  & > .Navbar {
+    position: relative;
+    box-shadow: $shadow-main;
+    background: $bg-secondary;
+  }
+}

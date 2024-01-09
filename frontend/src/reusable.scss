@@ -1,0 +1,31 @@
+$accent: #FE7223;
+
+$text-main: #000;
+$text-secondary: #423833;
+$text-alt-secondary: #B7A9A1;
+
+$bg-main: #FFF7F2;
+$bg-secondary: #fff;
+
+$shadow-main: 0px 4px 10px rgba(208, 208, 208, 0.25);
+$shadow-alt-main: 0px -4px 10px rgba(208, 208, 208, 0.25);
+
+$font-main: 'Oswald', sans-serif;
+$font-logo: 'Montserrat', sans-serif;
+
+@mixin desktop {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 500px) {
+    @content;
+  }
+}
+
+$height-viewport: calc(100vh - 2.5rem);
+@include desktop {
+  $height-viewport: 100vh;
+}

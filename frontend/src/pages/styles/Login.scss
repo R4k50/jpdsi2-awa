@@ -1,0 +1,14 @@
+@use '../../reusable' as *;
+
+.Login {
+  background: $bg-secondary;
+
+  @include desktop {
+    background: none;
+    min-height: $height-viewport;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 8rem;
+  }
+}

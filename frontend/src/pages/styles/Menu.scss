@@ -1,0 +1,41 @@
+@use '../../reusable' as *;
+
+.Menu {
+  min-height: 100vh;
+  padding-top: 1rem;
+  padding-bottom: 3rem;
+
+  @include desktop {
+    padding: 1.5rem 6rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 0rem;
+    text-align: center;
+
+    @include desktop {
+      text-align: left;
+    }
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(15rem, 1fr));
+    column-gap: 2rem;
+
+    @include desktop {
+      padding-right: 0;
+      grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+    }
+
+    .iconify {
+      color: $accent;
+      font-size: 7rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}

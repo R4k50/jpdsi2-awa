@@ -1,0 +1,52 @@
+@use '../../../reusable' as *;
+
+.Users {
+  min-height: 70vh;
+  padding: 5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .Form {
+    .checkbox {
+      label {
+        margin-right: .25rem;
+      }
+    }
+  }
+
+  & > h2 {
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+  }
+
+  table {
+    border-collapse: collapse;
+    background: $bg-secondary;
+    border-radius: 1rem;
+    box-shadow: $shadow-main, $shadow-alt-main;
+
+    th, td {
+      padding: .5rem;
+
+      .ButtonAction.Alt {
+        background: transparent;
+      }
+    }
+
+    thead {
+      border-bottom: lighten($text-alt-secondary, 10) 2px solid;
+
+      th {
+        color: $accent;
+        font-weight: 500;
+      }
+    }
+
+    tbody {
+      tr:nth-child(even)  {
+        background: lighten($text-alt-secondary, 28);
+      }
+    }
+  }
+}

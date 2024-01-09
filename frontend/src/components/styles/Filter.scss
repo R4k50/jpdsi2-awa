@@ -1,0 +1,73 @@
+@use '../../reusable' as *;
+
+.Filter {
+  min-height: 70vh;
+  padding: 5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > h2 {
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    margin-bottom: 1em;
+
+    select {
+      color: $bg-main;
+      background: $accent;
+      font-size: .75em;
+      border-radius: .25em;
+      border: none;
+      outline: none;
+      padding: .25em .25em;
+    }
+  }
+
+  .paging {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-block: 1em;
+
+    span {
+      grid-column: 2;
+      justify-self: center;
+    }
+  }
+
+  table {
+    border-collapse: collapse;
+    background: $bg-secondary;
+    border-radius: 1rem;
+    box-shadow: $shadow-main, $shadow-alt-main;
+
+    th, td {
+      padding: .5rem;
+
+      & > .ButtonAction.Alt {
+        background: transparent;
+      }
+    }
+
+    thead {
+      border-bottom: lighten($text-alt-secondary, 10) 2px solid;
+
+      th {
+        color: $accent;
+        font-weight: 500;
+      }
+    }
+
+    tbody {
+      tr:nth-child(even)  {
+        background: lighten($text-alt-secondary, 28);
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+@use '../../../reusable' as *;
+
+.Products {
+  min-height: 70vh;
+  padding: 5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -1,0 +1,48 @@
+@use '../../reusable' as *;
+
+.ButtonAction {
+  min-width: 5.5rem;
+  background: $accent;
+  border: none;
+  outline: 3px solid $accent;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  color: $bg-main;
+  font-size: .8rem;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  @include desktop {
+    min-width: 4.5rem;
+    outline: 2px solid $accent;
+    font-weight: 300;
+  }
+
+
+  & > .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: .2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    color: $bg-main;
+    text-align: center;
+
+
+    @include desktop {
+      padding-bottom: .2rem;
+      padding-left: .75rem;
+      padding-right: .75rem;
+    }
+  }
+
+  &.Alt {
+    background: $bg-secondary;
+
+    & > * {
+      color: $accent;
+    }
+  }
+}

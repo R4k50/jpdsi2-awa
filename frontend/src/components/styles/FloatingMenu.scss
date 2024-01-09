@@ -1,0 +1,36 @@
+@use '../../reusable' as *;
+
+.FloatingMenu {
+  width: 100%;
+  height: calc(100vh - 2.5rem);
+  padding: 2.5rem;
+  background: $bg-secondary;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .pages, .auth {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+
+    a:not(:first-child) {
+      margin-top: .5rem;
+    }
+  }
+
+  .auth {
+    margin-top: 2rem;
+
+    button:last-child {
+      margin-top: 1rem;
+    }
+  }
+
+  .Socials {
+    position: absolute;
+    bottom: 2.5rem;
+  }
+}

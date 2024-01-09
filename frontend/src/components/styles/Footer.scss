@@ -1,0 +1,98 @@
+@use '../../reusable' as *;
+
+footer {
+  padding: 2rem;
+  background: $bg-secondary;
+  box-shadow: $shadow-alt-main;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2.25rem;
+
+  @include desktop {
+    text-align: left;
+    padding: 2rem 6rem;
+  }
+
+  h3 {
+    font-size: .85rem;
+    margin-bottom: .5rem;
+  }
+
+  p, a {
+    font-size: .75rem;
+    color: $text-alt-secondary;
+  }
+
+  a:hover, a.active {
+    color: $accent;
+  }
+
+  .main {
+    .logo {
+      font-family: $font-logo;
+      font-size: 1.5rem;
+      color: $text-main;
+
+
+      span {
+        font-family: inherit;
+        color: $accent;
+      }
+    }
+
+    p {
+      width: 10rem;
+    }
+  }
+
+  .help {
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: .2rem;
+    }
+  }
+
+  .contact {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: .2rem;
+
+    h3 {
+      align-self: center;
+
+      @include desktop {
+        align-self: flex-start;
+      }
+    }
+
+    .info {
+      display: flex;
+      align-items: center;
+
+      .iconify {
+        margin-top: .2rem;
+        margin-right: .5rem;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .socials {
+    .Socials {
+      @include desktop {
+        position: relative;
+        left: -.15rem;
+      }
+
+      .iconify {
+        color: $text-alt-secondary;
+        font-size: 1rem;
+      }
+    }
+  }
+}
